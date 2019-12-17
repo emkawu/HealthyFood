@@ -11,6 +11,9 @@ using HealthyFood.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using HealthyFood.Services;
+using AutoMapper;
+using System;
 
 namespace HealthyFood
 {
@@ -31,15 +34,27 @@ namespace HealthyFood
                     Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddDefaultIdentity<ApplicationUser>()
+                .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
-
+            services.AddScoped<ICategoryRepository, CategoryRepository>();
+            services.AddScoped<IIngredientRepository, IngredientRepository>();
+            services.AddScoped<IMealRepository, MealRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
 
             services.AddIdentityServer()
                 .AddApiAuthorization<ApplicationUser, ApplicationDbContext>();
 
             services.AddAuthentication()
                 .AddIdentityServerJwt();
+
+            services.AddControllers(setupAction =>
+            {
+                //406 Not Acceptable
+                setupAction.ReturnHttpNotAcceptable = true;
+            });
+
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
             //services.AddControllersWithViews();
             //services.AddRazorPages();

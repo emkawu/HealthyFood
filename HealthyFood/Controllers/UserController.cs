@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using HealthyFood.Models;
 using HealthyFood.Services;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -21,6 +22,15 @@ namespace HealthyFood.Controllers
                 throw new ArgumentNullException(nameof(userRepository));
             _mapper = mapper ??
                 throw new ArgumentNullException(nameof(mapper));
+        }
+
+        [HttpGet]
+        public ActionResult<IEnumerable<ApplicationUser>> GetAllUsers()
+        {
+            var usersFromRepo = _userRepository.GetAllUsersAsync();
+            //var usersFromRepo = _userRepository.GetAllUsers();
+
+            return Ok(usersFromRepo);
         }
 
     }

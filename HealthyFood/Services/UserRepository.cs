@@ -4,26 +4,41 @@ using System.Linq;
 using System.Threading.Tasks;
 using HealthyFood.Data;
 using HealthyFood.Models;
+using Microsoft.AspNetCore.Identity;
+using HealthyFood.Helpers;
 
 namespace HealthyFood.Services
 {
     public class UserRepository : IUserRepository
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public UserRepository(ApplicationDbContext context)
+        public UserRepository(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
+            _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
         }
 
         public IEnumerable<ApplicationUser> GetAllUsers()
         {
-            throw new NotImplementedException();
+            return _context.Users.ToList();
         }
 
-        public ApplicationUser GetUser(string id)
+        public async Task<IEnumerable<ApplicationUser>> GetAllUsersAsync()
         {
-            throw new NotImplementedException();
+            return await _userManager.GetUsersInRoleAsync(UserRoles.Admin);
+        }
+
+        public ApplicationUser GetUser(string userId)
+        {
+            if (userId == null)
+            {
+                throw new ArgumentNullException(nameof(userId));
+            }
+
+            return _context.Users
+              .Where(u => u.Id == userId).FirstOrDefault();
         }
     }
 }

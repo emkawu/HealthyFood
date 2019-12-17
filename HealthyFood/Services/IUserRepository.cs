@@ -9,6 +9,7 @@ namespace HealthyFood.Services
     public interface IUserRepository
     {
         IEnumerable<ApplicationUser> GetAllUsers();
-        ApplicationUser GetUser(string id);
+        Task<IEnumerable<ApplicationUser>> GetAllUsersAsync();
+        ApplicationUser GetUser(string userId);
     }
 }
