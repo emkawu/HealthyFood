@@ -13,6 +13,7 @@ namespace HealthyFood.Profiles
         public CategoryProfile()
         {
             CreateMap<Category, CategoryDto>();
+            CreateMap<CategoryCreateDto, Category>();
         }
     }
 }

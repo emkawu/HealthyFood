@@ -42,5 +42,18 @@ namespace HealthyFood.Controllers
 
             return Ok(_mapper.Map<CategoryDto>(categoryFromRepo));
         }
+
+        [HttpPost]
+        public ActionResult<CategoryDto> CreateCategory(CategoryCreateDto category)
+        {
+            var categoryEntity = _mapper.Map<Entities.Category>(category);
+            _categoryRepository.AddCategory(categoryEntity);
+            _categoryRepository.Save();
+
+            var categoryToReturn = _mapper.Map<CategoryDto>(categoryEntity);
+            return CreatedAtRoute("GetCategory",
+                new { categoryId = categoryToReturn.Cat_CatId },
+                categoryToReturn);
+        }
     }
 }

@@ -32,8 +32,8 @@ namespace HealthyFood.Controllers
             return Ok(_mapper.Map<IEnumerable<IngredientDto>>(ingredientsFromRepo));
         }
 
-        [HttpGet("{ingId}")]
-        public ActionResult<IngredientDto> GetMeal(Guid ingId)
+        [HttpGet("{ingId}", Name = "GetIngredient")]
+        public ActionResult<IngredientDto> GetIngredient(Guid ingId)
         {
             var ingredientFromRepo = _ingredientRepository.GetIngredient(ingId);
 
@@ -43,6 +43,19 @@ namespace HealthyFood.Controllers
             }
 
             return Ok(_mapper.Map<IngredientDto>(ingredientFromRepo));
+        }
+
+        [HttpPost]
+        public ActionResult<IngredientDto> CreateIngredient(IngredientCreateDto ingredient)
+        {
+            var ingredientEntity = _mapper.Map<Entities.Ingredient>(ingredient);
+            _ingredientRepository.AddIngredient(ingredientEntity);
+            _ingredientRepository.Save();
+
+            var ingredientToReturn = _mapper.Map<IngredientDto>(ingredientEntity);
+            return CreatedAtRoute("GetIngredient",
+                new { ingId = ingredientToReturn.Ing_IngId },
+                ingredientToReturn);
         }
     }
 }

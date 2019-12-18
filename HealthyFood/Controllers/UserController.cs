@@ -27,10 +27,17 @@ namespace HealthyFood.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<ApplicationUser>> GetAllUsers()
         {
-            var usersFromRepo = _userRepository.GetAllUsersAsync();
-            //var usersFromRepo = _userRepository.GetAllUsers();
+            //var usersFromRepo = _userRepository.GetAllUsersAsync();
+            var usersFromRepo = _userRepository.GetAllUsers();
 
             return Ok(usersFromRepo);
+        }
+
+        [HttpGet("{userId}")]
+        public ActionResult<IEnumerable<ApplicationUser>> GetAllUsers(string userId)
+        {
+            var userFromRepo = _userRepository.GetUser(userId);
+            return Ok(_mapper.Map<ApplicationUserDto>(userFromRepo));
         }
 
     }

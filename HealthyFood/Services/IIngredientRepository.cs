@@ -10,5 +10,9 @@ namespace HealthyFood.Services
     {
         IEnumerable<Ingredient> GetAllIngredients();
         Ingredient GetIngredient(Guid ing_IngId);
+        void AddIngredient(Ingredient ingredient);
+        void UpdateIngredient(Ingredient ingredient);
+        void DeleteIngredient(Ingredient ingredient);
+        bool Save();
     }
 }

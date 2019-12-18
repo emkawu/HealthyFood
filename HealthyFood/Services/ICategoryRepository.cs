@@ -10,5 +10,9 @@ namespace HealthyFood.Services
     {
         IEnumerable<Category> GetAllCategories();
         Category GetCategory(Guid cat_CatId);
+        void AddCategory(Category category);
+        void UpdateCategory(Category category);
+        void DeleteCategory(Category category);
+        bool Save();
     }
 }

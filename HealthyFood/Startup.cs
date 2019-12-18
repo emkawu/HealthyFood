@@ -19,9 +19,10 @@ namespace HealthyFood
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration, SampleData seeder)
         {
             Configuration = configuration;
+            seeder.SeedAdminUser();
         }
 
         public IConfiguration Configuration { get; }
@@ -42,8 +43,15 @@ namespace HealthyFood
             services.AddScoped<IMealRepository, MealRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
 
+            
+
             services.AddIdentityServer()
                 .AddApiAuthorization<ApplicationUser, ApplicationDbContext>();
+
+
+            services.AddTransient<SampleData>();
+
+
 
             services.AddAuthentication()
                 .AddIdentityServerJwt();
