@@ -36,9 +36,15 @@ namespace HealthyFood.Data
             modelBuilder.Entity<Category>().HasData(new Category { Cat_CatId = new Guid("42e6406b1aec44f295037109cd9b11d2"), Cat_Name = "Category 2", Cat_Desc = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam aliquet, massa quis pellentesque consequat, nunc lectus blandit elit, eget fringilla lorem ante at nulla." });
             modelBuilder.Entity<Category>().HasData(new Category { Cat_CatId = new Guid("a872b4affe874b6ab9fee57ad2c23184"), Cat_Name = "Category 3", Cat_Desc = "Pellentesque velit felis, sagittis lacinia lacinia sit amet, venenatis ut urna. Donec elit mi, ornare non rhoncus in, elementum et mi. Donec eleifend placerat massa, pretium aliquam diam mattis in." });
 
+            string ADMIN_ID = Guid.NewGuid().ToString();
+            string USER_ID = Guid.NewGuid().ToString();
+            string ADMINROLE_ID = Guid.NewGuid().ToString();
+            string USERROLE_ID = Guid.NewGuid().ToString();
+
             //seed ADMIN
             ApplicationUser appAdmin = new ApplicationUser
             {
+                Id = ADMIN_ID,
                 UserName = "admin@healthyfood.com",
                 Email = "admin@healthyfood.com",
                 NormalizedEmail = "admin@healthyfood.com".ToUpper(),
@@ -51,6 +57,7 @@ namespace HealthyFood.Data
 
             ApplicationUser appUser = new ApplicationUser
             {
+                Id = USER_ID,
                 UserName = "user@healthyfood.com",
                 Email = "user@healthyfood.com",
                 NormalizedEmail = "user@healthyfood.com".ToUpper(),
@@ -67,11 +74,16 @@ namespace HealthyFood.Data
             appUser.PasswordHash = phr.HashPassword(appUser, "ZAQ123wsx!");
 
             modelBuilder.Entity<IdentityRole>().HasData(
-                new IdentityRole { Name = "Admin", NormalizedName = "ADMIN" },
-                new IdentityRole { Name = "User", NormalizedName = "USER" }
+                new IdentityRole { Id = ADMINROLE_ID, Name = Helpers.UserRoles.Admin, NormalizedName = Helpers.UserRoles.Admin.ToUpper() },
+                new IdentityRole { Id = USERROLE_ID, Name = Helpers.UserRoles.User, NormalizedName = Helpers.UserRoles.User.ToUpper() }
             );
             modelBuilder.Entity<ApplicationUser>().HasData(appAdmin);
             modelBuilder.Entity<ApplicationUser>().HasData(appUser);
+
+            modelBuilder.Entity<IdentityUserRole<string>>().HasData(
+                new IdentityUserRole<string> { RoleId = ADMINROLE_ID, UserId = ADMIN_ID },
+                new IdentityUserRole<string> { RoleId = USERROLE_ID, UserId = USER_ID }
+            );
         }
     }
 }
