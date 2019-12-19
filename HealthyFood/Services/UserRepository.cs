@@ -22,12 +22,12 @@ namespace HealthyFood.Services
 
         public IEnumerable<ApplicationUser> GetAllUsers()
         {
-            return _context.Users.ToList();
+            return _userManager.GetUsersInRoleAsync(UserRoles.User).Result;
         }
 
         public async Task<IEnumerable<ApplicationUser>> GetAllUsersAsync()
         {
-            return await _userManager.GetUsersInRoleAsync(UserRoles.Admin);
+            return await _userManager.GetUsersInRoleAsync(UserRoles.User);
         }
 
         public ApplicationUser GetUser(string userId)

@@ -12,6 +12,7 @@ namespace HealthyFood.Profiles
         public UserProfile()
         {
             CreateMap<ApplicationUser, ApplicationUserDto>();
+            CreateMap<ApplicationUserCreateDto, ApplicationUser>();
         }
     }
 }
